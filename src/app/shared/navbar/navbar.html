@@ -1,0 +1,22 @@
+<nav class="navbar">
+
+  <span class="brand">Smart POS</span>
+
+  <div class="nav-links">
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/products" routerLinkActive="active">Products</a>
+    <a routerLink="/sales" routerLinkActive="active">Sales</a>
+    <a routerLink="/customers" routerLinkActive="active">Customers</a>
+    <a routerLink="/purchase" routerLinkActive="active">Purchase</a>
+    <a routerLink="/profit" routerLinkActive="active">Profit</a>
+    <a routerLink="/suppliers" routerLinkActive="active">Suppliers</a>
+    <a routerLink="/returns" routerLinkActive="active">Returns</a>
+    @if (isAdmin()) {
+      <a routerLink="/users" routerLinkActive="active">Users</a>
+    }
+    <a routerLink="/change-password" routerLinkActive="active">Change Password</a>
+    
+    <button (click)="logout()">Logout</button>
+  </div>
+
+</nav>

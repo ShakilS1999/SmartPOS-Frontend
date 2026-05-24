@@ -1,0 +1,53 @@
+<div class="add-product">
+
+  <h1>Add Product</h1>
+
+  <div>
+
+    <label>Product Name</label>
+
+    <input
+      type="text"
+      [(ngModel)]="productName"
+    />
+
+  </div>
+
+  <div>
+
+    <label>Barcode</label>
+
+    <input
+      type="text"
+      [(ngModel)]="barcode"
+    />
+
+  </div>
+
+  <div>
+
+    <label>Price</label>
+
+    <input
+      type="number"
+      [(ngModel)]="price"
+    />
+
+  </div>
+
+  <div>
+
+    <label>Stock Quantity</label>
+
+    <input
+      type="number"
+      [(ngModel)]="stockQuantity"
+    />
+
+  </div>
+
+  <button (click)="saveProduct()">
+    Save Product
+  </button>
+
+</div>
