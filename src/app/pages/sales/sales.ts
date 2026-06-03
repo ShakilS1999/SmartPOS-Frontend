@@ -35,6 +35,8 @@ export class Sales implements OnInit {
   quantity = 1;
   discount = 0;
   tax = 0;
+  paidAmount = 0;
+  barcodeInput = '';
 
   currentPage = signal(1);
   itemsPerPage = 10;
@@ -48,6 +50,10 @@ export class Sales implements OnInit {
 
   netTotal = computed(() =>
     this.subTotal() - this.discount + this.tax
+  );
+
+  dueAmount = computed(() =>
+    Math.max(0, this.netTotal() - this.paidAmount)
   );
 
   paginatedSales = computed(() => {
@@ -84,6 +90,38 @@ export class Sales implements OnInit {
       next: (res: any) => this.customers.set(res),
       error: (err) => console.log(err)
     });
+  }
+
+  onBarcodeInput(barcode: string) {
+    if (!barcode.trim()) return;
+
+    const product = this.products().find(
+      p => p.barcode === barcode.trim()
+    );
+
+    if (!product) {
+      this.toast.warning('Product not found!');
+      this.barcodeInput = '';
+      return;
+    }
+
+    const existing = this.cart.find(
+      c => c.productId === product.productId
+    );
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      this.cart.push({
+        productId: product.productId,
+        productName: product.productName,
+        quantity: 1,
+        unitPrice: product.price
+      });
+    }
+
+    this.toast.success(`${product.productName} added!`);
+    this.barcodeInput = '';
   }
 
   addToCart() {
@@ -133,6 +171,7 @@ export class Sales implements OnInit {
       customerId: this.selectedCustomerId === 0 ? null : this.selectedCustomerId,
       discount: this.discount,
       tax: this.tax,
+      paidAmount: this.paidAmount,
       items: this.cart.map(c => ({
         productId: c.productId,
         quantity: c.quantity
@@ -155,6 +194,7 @@ export class Sales implements OnInit {
         this.cart = [];
         this.discount = 0;
         this.tax = 0;
+        this.paidAmount = 0;
         this.selectedCustomerId = 0;
       },
       error: (err) => {
@@ -167,6 +207,10 @@ export class Sales implements OnInit {
   viewReceipt(sale: any) {
     this.receiptData.set(sale);
     this.showReceipt.set(true);
+  }
+
+  exportExcel() {
+    this.exportService.exportSales(this.sales());
   }
 
   downloadInvoice(saleId: number) {
@@ -185,8 +229,5 @@ export class Sales implements OnInit {
       }
     });
   }
-  exportExcel() {
-  this.exportService.exportSales(this.sales());
-}
 
 }

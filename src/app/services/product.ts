@@ -32,4 +32,8 @@ export class Product {
       responseType: 'text'
     });
   }
+
+  getLowStock() {
+  return this.http.get<any[]>(`${this.apiUrl}/low-stock`);
+}
 }

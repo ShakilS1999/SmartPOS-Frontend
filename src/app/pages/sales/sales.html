@@ -6,6 +6,19 @@
 
     <h2>New Sale</h2>
 
+    <div class="barcode-section">
+      <label>🔍 Scan Barcode</label>
+      <input
+        type="text"
+        [(ngModel)]="barcodeInput"
+        (keyup.enter)="onBarcodeInput(barcodeInput)"
+        placeholder="Scan or type barcode here..."
+        class="barcode-input"
+        autofocus
+      />
+      <small>Physical scanner দিয়ে scan করুন অথবা barcode type করে Enter চাপুন</small>
+    </div>
+
     <div class="sale-options">
 
       <div class="option-group">
@@ -97,6 +110,20 @@
           <span>Net Total:</span>
           <span>৳ {{ netTotal() }}</span>
         </div>
+        <div class="summary-row paid">
+          <span>Paid Amount:</span>
+          <input
+            type="number"
+            [(ngModel)]="paidAmount"
+            min="0"
+            [max]="netTotal()"
+            class="paid-input"
+          />
+        </div>
+        <div class="summary-row due">
+          <span>Due Amount:</span>
+          <span>৳ {{ dueAmount() }}</span>
+        </div>
       </div>
 
       <button class="complete-btn" (click)="completeSale()">
@@ -109,10 +136,10 @@
   <h2>Sale History</h2>
 
   <div class="export-bar">
-  <button class="export-btn" (click)="exportExcel()">
-    📊 Export to Excel
-  </button>
-</div>
+    <button class="export-btn" (click)="exportExcel()">
+      📊 Export to Excel
+    </button>
+  </div>
 
   <table>
     <thead>
@@ -121,6 +148,8 @@
         <th>Customer</th>
         <th>Date</th>
         <th>Net Total</th>
+        <th>Paid</th>
+        <th>Due</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -131,6 +160,10 @@
           <td>{{ sale.customerName }}</td>
           <td>{{ sale.saleDate | date:'dd/MM/yyyy' }}</td>
           <td>৳ {{ sale.netTotal }}</td>
+          <td>৳ {{ sale.paidAmount }}</td>
+          <td [class.text-danger]="sale.dueAmount > 0">
+            ৳ {{ sale.dueAmount }}
+          </td>
           <td>
             <button class="receipt-btn" (click)="viewReceipt(sale)">Receipt</button>
             <button class="invoice-btn" (click)="downloadInvoice(sale.saleId)">PDF</button>

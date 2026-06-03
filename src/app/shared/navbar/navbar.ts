@@ -13,6 +13,7 @@ export class Navbar {
   private router = inject(Router);
 
   isAdmin = signal(false);
+  menuOpen = false;
 
   constructor() {
     const token = localStorage.getItem('token');
@@ -23,8 +24,17 @@ export class Navbar {
     }
   }
 
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+  }
+
   logout() {
     localStorage.removeItem('token');
+    this.menuOpen = false;
     this.router.navigate(['']);
   }
 

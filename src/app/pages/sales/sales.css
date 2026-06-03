@@ -109,3 +109,37 @@
 .export-btn:hover {
   background-color: #155330;
 }
+
+.barcode-section {
+  background: #e8f5e9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 2px dashed #28a745;
+}
+
+.barcode-section label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1d6f42;
+  margin-bottom: 8px;
+}
+
+.barcode-section small {
+  color: #666;
+  font-size: 12px;
+  display: block;
+  margin-top: 5px;
+}
+
+.barcode-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.barcode-input {
+  flex: 1;
+  font-size: 16px;
+  border: 2px solid #28a745;
+}
