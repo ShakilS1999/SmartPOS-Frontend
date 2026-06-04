@@ -20,6 +20,7 @@ export class AddProduct {
   productName = '';
   barcode = '';
   price = 0;
+  costPrice = 0;
   stockQuantity = 0;
   generatedBarcode = signal('');
 
@@ -35,6 +36,7 @@ export class AddProduct {
 
   renderBarcode(code: string) {
     const JsBarcode = (window as any).JsBarcode;
+
     if (JsBarcode) {
       JsBarcode('#barcode-svg', code, {
         format: 'CODE128',
@@ -48,6 +50,7 @@ export class AddProduct {
   printBarcode() {
     const printContent = document.getElementById('barcode-print')?.innerHTML;
     const win = window.open('', '_blank');
+
     win?.document.write(`
       <html>
         <body onload="window.print()">
@@ -55,6 +58,7 @@ export class AddProduct {
         </body>
       </html>
     `);
+
     win?.document.close();
   }
 
@@ -63,8 +67,24 @@ export class AddProduct {
       this.toast.warning('Product name is required');
       return;
     }
+
     if (this.price <= 0) {
       this.toast.warning('Price must be greater than 0');
+      return;
+    }
+
+    if (this.costPrice < 0) {
+      this.toast.warning('Cost price cannot be negative');
+      return;
+    }
+
+    if (this.costPrice > this.price) {
+      this.toast.warning('Cost price cannot be greater than selling price');
+      return;
+    }
+
+    if (this.stockQuantity < 0) {
+      this.toast.warning('Stock quantity cannot be negative');
       return;
     }
 
@@ -72,6 +92,7 @@ export class AddProduct {
       productName: this.productName,
       barcode: this.barcode,
       price: this.price,
+      costPrice: this.costPrice,
       stockQuantity: this.stockQuantity
     };
 
